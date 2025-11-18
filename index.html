@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Bacteria Shape Match</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preload" href="style.css" as="style" />
+  <meta name="description" content="Fast-paced educational game: match bacteria to their morphological shapes." />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Bacteria Shape Match</h1>
+    <button id="infoBtn" class="ghost" aria-label="Game info">ℹ️</button>
+  </header>
+  <main id="game" class="game-container" role="main">
+    <section id="statusBar" class="status-bar" aria-label="Game status">
+      <div class="score" aria-live="polite">Score: <span id="score">0</span></div>
+      <div class="streak" aria-live="polite">Streak: <span id="streak">0</span></div>
+      <div class="lives" aria-live="polite">Lives: <span id="lives">3</span></div>
+      <div class="level" aria-live="polite">Level: <span id="level">1</span></div>
+      <div class="timer-wrapper" aria-label="Remaining time"><div id="timerBar" class="timer-bar"></div></div>
+    </section>
+
+    <section id="promptArea" class="prompt-area" aria-label="Match this shape">
+      <div id="shapeCard" class="shape-card" tabindex="0" aria-describedby="shapeHint"></div>
+      <p id="shapeHint" class="visually-hidden">Identify the bacterial morphology shown.</p>
+    </section>
+
+    <section id="choices" class="choices" aria-label="Answer choices" role="list"></section>
+
+    <section id="feedback" class="feedback" aria-live="assertive"></section>
+
+    <div class="controls">
+      <button id="startBtn" class="primary">Start Game</button>
+      <button id="restartBtn" class="secondary" hidden>Play Again</button>
+    </div>
+  </main>
+
+  <dialog id="infoDialog" class="modal" aria-label="Game information">
+    <form method="dialog">
+      <h2>How to Play</h2>
+      <p>Match the displayed bacterial shape with the correct morphology name. Answer quickly to build streaks and earn bonus points. Levels increase difficulty with more choices and shorter time.</p>
+      <ul>
+        <li><strong>Streaks:</strong> Consecutive correct answers increase multiplier.</li>
+        <li><strong>Lives:</strong> Wrong answers reduce lives. Lose all = game over.</li>
+        <li><strong>Timer:</strong> shape must be matched before bar empties.</li>
+        <li><strong>Mobile:</strong> Tap choices. Desktop: click or use arrow keys + Enter.</li>
+      </ul>
+      <button class="primary">Close</button>
+    </form>
+  </dialog>
+
+  <dialog id="shapeInfoDialog" class="modal" aria-label="Shape details">
+    <form method="dialog">
+      <h2 id="shapeInfoTitle">Shape</h2>
+      <p id="shapeInfoText"></p>
+      <button class="primary">Close</button>
+    </form>
+  </dialog>
+
+  <footer class="app-footer">
+    <small>&copy; 2025 Bacteria Match • Educational Use Only</small>
+  </footer>
+  <script src="script.js" defer></script>
+</body>
+</html>
