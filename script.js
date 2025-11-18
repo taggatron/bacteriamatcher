@@ -4,70 +4,134 @@
     {
       key: 'cocci',
       label: 'Cocci',
-      info: 'Spherical bacteria. May appear singly, in pairs, chains (streptococci), clusters (staphylococci), or other groupings.',
-      svg: `<svg class="shape-svg" viewBox="0 0 120 120" aria-labelledby="title" role="img"><title>Cocci shape</title>
+      info: 'Spherical bacteria. Under brightfield microscopy they appear as smooth, refractile circles; clusters suggest staphylococci, chains suggest streptococci.',
+      svg: `<svg class="shape-svg" viewBox="0 0 130 130" aria-labelledby="title" role="img"><title>Cocci cluster</title>
         <defs>
-          <radialGradient id="cgr" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#c9f8ff" />
-            <stop offset="100%" stop-color="#5aa9b8" />
+          <radialGradient id="cocciCore" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#f9fdff" />
+            <stop offset="70%" stop-color="#b8d6e5" />
+            <stop offset="100%" stop-color="#6a8fa3" />
           </radialGradient>
+          <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="2" result="blur" />
+            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
         </defs>
-        <g fill="url(#cgr)">
-          <circle cx="40" cy="40" r="22" />
-          <circle cx="78" cy="44" r="20" />
-          <circle cx="60" cy="78" r="24" />
+        <g filter="url(#softGlow)" stroke="#294653" stroke-width="2" fill="url(#cocciCore)">
+          <circle cx="55" cy="45" r="18" />
+          <circle cx="78" cy="52" r="17" />
+          <circle cx="50" cy="70" r="16" />
+          <circle cx="78" cy="78" r="18" />
+          <circle cx="95" cy="62" r="14" />
+          <circle cx="65" cy="28" r="14" />
         </g>
       </svg>`
     },
     {
       key: 'bacilli',
       label: 'Bacilli',
-      info: 'Rod-shaped bacteria. Can form chains. Shape increases surface area aiding nutrient exchange.',
-      svg: `<svg class="shape-svg" viewBox="0 0 120 120" aria-labelledby="title" role="img"><title>Bacilli shape</title>
-        <rect x="18" y="30" width="28" height="60" rx="14" fill="#ffc857" />
-        <rect x="50" y="30" width="28" height="60" rx="14" fill="#e9724c" />
-        <rect x="82" y="30" width="20" height="60" rx="10" fill="#c5283d" />
+      info: 'Rod-shaped bacteria. Under the scope they appear elongated with rounded ends; alignment suggests chains (e.g., Bacillus) or scattered rods (e.g., E. coli).',
+      svg: `<svg class="shape-svg" viewBox="0 0 150 120" aria-labelledby="title" role="img"><title>Bacilli rods</title>
+        <defs>
+          <linearGradient id="rodGrad" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stop-color="#ffe7b3" />
+            <stop offset="60%" stop-color="#e5b35c" />
+            <stop offset="100%" stop-color="#c4862b" />
+          </linearGradient>
+        </defs>
+        <g stroke="#603d11" stroke-width="2" fill="url(#rodGrad)" filter="url(#softGlow)">
+          <rect x="18" y="34" width="46" height="20" rx="10" />
+          <rect x="32" y="58" width="46" height="20" rx="10" transform="rotate(6 55 68)" />
+          <rect x="78" y="40" width="46" height="20" rx="10" transform="rotate(-8 101 50)" />
+          <rect x="86" y="66" width="38" height="18" rx="9" />
+        </g>
       </svg>`
     },
     {
       key: 'spirilla',
       label: 'Spirilla',
-      info: 'Rigid spiral-shaped bacteria. Motile via flagella; distinct from flexible spirochetes.',
-      svg: `<svg class="shape-svg" viewBox="0 0 160 120" aria-labelledby="title" role="img"><title>Spirilla shape</title>
-        <path d="M10 60c25-50 50 50 75 0s50 50 75 0" stroke="#8ecae6" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+      info: 'Rigid spiral-shaped bacteria with fewer turns than spirochetes; thick helical profile and external flagella.',
+      svg: `<svg class="shape-svg" viewBox="0 0 170 120" aria-labelledby="title" role="img"><title>Spirilla helix</title>
+        <defs>
+          <linearGradient id="spirGrad" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stop-color="#c4ecf5" />
+            <stop offset="100%" stop-color="#6aa9c1" />
+          </linearGradient>
+        </defs>
+        <path d="M10 70c25-60 45 60 70 0s45 60 70 0" stroke="#36687a" stroke-width="12" stroke-linecap="round" fill="none" />
+        <path d="M10 70c25-60 45 60 70 0s45 60 70 0" stroke="url(#spirGrad)" stroke-width="8" stroke-linecap="round" fill="none" />
+        <g stroke="#36687a" stroke-width="2" fill="#36687a">
+          <line x1="30" y1="40" x2="22" y2="25" />
+          <line x1="95" y1="42" x2="87" y2="25" />
+          <line x1="140" y1="45" x2="150" y2="28" />
+        </g>
       </svg>`
     },
     {
       key: 'vibrio',
       label: 'Vibrio',
-      info: 'Comma-shaped curved rods. Notably includes Vibrio cholerae. A single polar flagellum often present.',
-      svg: `<svg class="shape-svg" viewBox="0 0 120 120" aria-labelledby="title" role="img"><title>Vibrio shape</title>
-        <path d="M25 70c10-38 50-38 65-10" stroke="#90be6d" stroke-width="16" stroke-linecap="round" fill="none" />
+      info: 'Comma-shaped curved rods; often a single polar flagellum. Appears as a gently curved cell under the microscope.',
+      svg: `<svg class="shape-svg" viewBox="0 0 130 120" aria-labelledby="title" role="img"><title>Vibrio curved rod</title>
+        <defs>
+          <linearGradient id="vibGrad" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stop-color="#d2f6d9" />
+            <stop offset="100%" stop-color="#7bbd83" />
+          </linearGradient>
+        </defs>
+        <path d="M30 75c6-40 55-42 70-18" stroke="#35633b" stroke-width="10" stroke-linecap="round" fill="none" />
+        <path d="M30 75c6-40 55-42 70-18" stroke="url(#vibGrad)" stroke-width="6" stroke-linecap="round" fill="none" />
+        <path d="M105 57q8 8 10 16" stroke="#35633b" stroke-width="2" fill="none" stroke-linecap="round" />
       </svg>`
     },
     {
       key: 'spirochete',
       label: 'Spirochetes',
-      info: 'Flexible spiral-shaped bacteria with axial filaments allowing corkscrew motion (e.g., Treponema).',
-      svg: `<svg class="shape-svg" viewBox="0 0 160 120" aria-labelledby="title" role="img"><title>Spirochete shape</title>
-        <path d="M5 60c15-40 30 40 45 0s30 40 45 0 30 40 45 0" stroke="#f28482" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+      info: 'Thin, flexible, tightly coiled cells with internal axial filaments producing corkscrew motility.',
+      svg: `<svg class="shape-svg" viewBox="0 0 180 120" aria-labelledby="title" role="img"><title>Spirochete thin spiral</title>
+        <defs>
+          <linearGradient id="spiroGrad" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stop-color="#ffd1d1" />
+            <stop offset="100%" stop-color="#d46b6b" />
+          </linearGradient>
+        </defs>
+        <path d="M10 65c18-50 36 50 54 0s36 50 54 0 36 50 54 0" stroke="#812f2f" stroke-width="5" fill="none" stroke-linecap="round" />
+        <path d="M10 65c18-50 36 50 54 0s36 50 54 0 36 50 54 0" stroke="url(#spiroGrad)" stroke-width="3" fill="none" stroke-linecap="round" />
       </svg>`
     },
     {
       key: 'filamentous',
       label: 'Filamentous',
-      info: 'Long thread-like cells forming branching networks; common in certain soil and aquatic bacteria.',
-      svg: `<svg class="shape-svg" viewBox="0 0 160 120" aria-labelledby="title" role="img"><title>Filamentous shape</title>
-        <path d="M10 100C30 40 50 40 70 100s40-60 60 0" stroke="#ffafcc" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+      info: 'Branching, thread-like networks resembling fungal hyphae; aerial filaments (e.g., Streptomyces) appear tangled.',
+      svg: `<svg class="shape-svg" viewBox="0 0 180 120" aria-labelledby="title" role="img"><title>Filamentous branching network</title>
+        <defs>
+          <linearGradient id="filGrad" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stop-color="#ffe3f2" />
+            <stop offset="100%" stop-color="#e291b7" />
+          </linearGradient>
+        </defs>
+        <path d="M15 105C30 40 48 42 65 105s33-60 50-5 35-55 50-10" stroke="#8d4c6a" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M15 105C30 40 48 42 65 105s33-60 50-5 35-55 50-10" stroke="url(#filGrad)" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M65 105c8-34 12-40 20-60" stroke="#8d4c6a" stroke-width="4" stroke-linecap="round" />
+        <path d="M115 100c6-22 10-30 18-46" stroke="#8d4c6a" stroke-width="4" stroke-linecap="round" />
       </svg>`
     },
     {
       key: 'diplococci',
       label: 'Diplococci',
-      info: 'Pairs of spherical cocci (e.g., Neisseria). Division occurs in one plane producing characteristic pairs.',
-      svg: `<svg class="shape-svg" viewBox="0 0 120 120" aria-labelledby="title" role="img"><title>Diplococci shape</title>
-        <circle cx="48" cy="60" r="26" fill="#bde0fe" />
-        <circle cx="74" cy="60" r="26" fill="#77b5d9" />
+      info: 'Pairs of spherical cocci (e.g., Neisseria, Streptococcus pneumoniae) with a flattened adjacent side (cleft) at the division plane.',
+      svg: `<svg class="shape-svg" viewBox="0 0 130 120" aria-labelledby="title" role="img"><title>Diplococci pair</title>
+        <defs>
+          <radialGradient id="dipGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#eef8ff" />
+            <stop offset="70%" stop-color="#9dc5e5" />
+            <stop offset="100%" stop-color="#4b6d86" />
+          </radialGradient>
+        </defs>
+        <g filter="url(#softGlow)" fill="url(#dipGrad)" stroke="#27495c" stroke-width="2">
+          <path d="M56 60c0 16-10 28-22 28s-22-12-22-28 10-28 22-28 22 12 22 28Z" />
+          <path d="M96 60c0 16-10 28-22 28s-22-12-22-28 10-28 22-28 22 12 22 28Z" />
+          <rect x="52" y="45" width="8" height="30" rx="4" fill="#27495c" />
+        </g>
       </svg>`
     }
   ];
