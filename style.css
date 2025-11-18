@@ -68,6 +68,19 @@ body {
 .modal form { display: flex; flex-direction: column; gap: .9rem; }
 .modal h2 { margin: .2rem 0 .4rem; font-size: 1.4rem; }
 .modal ul { margin: .2rem 0 .2rem 1.1rem; padding: 0; display: grid; gap: .35rem; }
+.example-feedback { min-height: 1.2rem; font-size: .85rem; color: var(--warning); font-weight: 500; }
+.example-actions button { flex: 1 1 auto; }
+input#exampleInput { width: 100%; padding: .65rem .75rem; border-radius: var(--radius-md); border: 1px solid #2a3d52; background: #182736; color: var(--text-soft); font-size: .9rem; }
+input#exampleInput:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* Species Challenge */
+.species-challenge { margin-top: .4rem; padding: .8rem .9rem 1.1rem; background: rgba(255,255,255,.03); border: 1px solid #2a3d52; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: .8rem; }
+.species-challenge .challenge-title { margin: 0; font-size: 1rem; font-weight: 600; letter-spacing: .5px; color: var(--text-soft); }
+.species-choices { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); }
+.species-choices .species-btn { border: none; padding: .65rem .7rem; font-size: .75rem; letter-spacing: .3px; border-radius: var(--radius-md); background: linear-gradient(135deg,#24364a,#33546d); color: var(--text-soft); cursor: pointer; font-weight: 600; box-shadow: var(--shadow-sm); transition: background .25s, transform .25s; }
+.species-choices .species-btn:hover { background: linear-gradient(135deg,#33546d,#406989); }
+.species-choices .species-btn.correct { background: linear-gradient(135deg,#1b5e20,#2e7d32); }
+.species-choices .species-btn.wrong { background: linear-gradient(135deg,#8a1c23,#c62828); }
+.species-choices .species-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Animations */
 @keyframes pop-in { 0% { transform: scale(.75) rotate(-6deg); opacity: 0; } 60% { transform: scale(1.05) rotate(2deg); opacity: 1; } 100% { transform: scale(1) rotate(0); } }

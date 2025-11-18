@@ -88,6 +88,8 @@
   const shapeInfoDialog = document.getElementById('shapeInfoDialog');
   const shapeInfoTitle = document.getElementById('shapeInfoTitle');
   const shapeInfoText = document.getElementById('shapeInfoText');
+  const speciesChallenge = document.getElementById('speciesChallenge');
+  const speciesChoicesEl = document.getElementById('speciesChoices');
 
   // State
   let currentShape = null;
@@ -100,9 +102,50 @@
   let timerTotal = 0;
   let frameReq = null;
   let usedShapes = new Set();
+  let examplesCompleted = new Set(); // track shapes that have had species challenge done
+  let inSpeciesChallenge = false;
+
+  const speciesExamples = {
+    cocci: [
+      'staphylococcus aureus','staphylococcus epidermidis','streptococcus pyogenes','streptococcus pneumoniae','micrococcus luteus','enterococcus faecalis'
+    ],
+    bacilli: [
+      'escherichia coli','bacillus subtilis','bacillus anthracis','pseudomonas aeruginosa','salmonella enterica','listeria monocytogenes'
+    ],
+    spirilla: [
+      'spirillum volutans','aquaspirillum serpens'
+    ],
+    vibrio: [
+      'vibrio cholerae','vibrio vulnificus','vibrio parahaemolyticus'
+    ],
+    spirochete: [
+      'treponema pallidum','borrelia burgdorferi','leptospira interrogans'
+    ],
+    filamentous: [
+      'streptomyces coelicolor','nocardia asteroides','actinomyces israelii'
+    ],
+    diplococci: [
+      'neisseria meningitidis','neisseria gonorrhoeae','streptococcus pneumoniae'
+    ]
+  };
 
   function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
   function shuffle(arr) { return arr.sort(() => Math.random() - 0.5); }
+  const genusByShape = {
+    bacilli: 'Bacillus',
+    cocci: 'Coccus',
+    spirilla: 'Spirillum',
+    vibrio: 'Vibrio',
+    spirochete: 'Spirochete',
+    filamentous: 'Filamentous',
+    diplococci: 'Diplococcus',
+  };
+  const sciCap = (full) => {
+    const [g, s] = full.split(' ');
+    if (!s) return g.charAt(0).toUpperCase() + g.slice(1).toLowerCase();
+    return g.charAt(0).toUpperCase() + g.slice(1).toLowerCase() + ' ' + s.toLowerCase();
+  };
+  const speciesPart = (full) => (full.split(' ')[1] || '').toLowerCase();
 
   function computeTimerForLevel(lvl) {
     const base = 9000; // ms
@@ -178,6 +221,11 @@
       if (score > level * 500) {
         level++;
       }
+      // Trigger species challenge if not yet completed for this shape
+      if (!examplesCompleted.has(currentShape.key)) {
+        setTimeout(() => openSpeciesChallenge(currentShape), 600);
+        return; // wait for species choice before proceeding
+      }
     } else {
       btn.classList.add('wrong');
       streak = 0;
@@ -232,7 +280,7 @@
   }
 
   function startGame() {
-    score = 0; streak = 0; lives = 3; level = 1; playing = true; usedShapes.clear();
+    score = 0; streak = 0; lives = 3; level = 1; playing = true; usedShapes.clear(); examplesCompleted.clear(); inSpeciesChallenge = false;
     startBtn.hidden = true; restartBtn.hidden = true; feedbackEl.textContent='';
     updateHUD();
     nextShape();
@@ -262,6 +310,7 @@
   [infoDialog, shapeInfoDialog].forEach(dlg => {
     dlg?.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
   });
+  // species challenge has no dialog; nothing to close
 
   // Accessibility: allow ESC to close dialogs
   window.addEventListener('keydown', e => {
@@ -276,5 +325,68 @@
     // Could adapt timer length slightly for tiny screens
     if (playing) timerTotal = computeTimerForLevel(level); // recalibrate baseline
   });
+
+  // Species challenge rendering
+  function openSpeciesChallenge(shape) {
+    if (!playing) return;
+    inSpeciesChallenge = true;
+    speciesChallenge.hidden = false;
+    speciesChoicesEl.innerHTML = '';
+    const correctList = speciesExamples[shape.key] || [];
+    const correctSpecies = rand(correctList);
+    // Build distractors from other shape pools
+    const otherPools = Object.entries(speciesExamples).filter(([k]) => k !== shape.key).flatMap(([, arr]) => arr);
+    const distractors = shuffle(otherPools.filter(s => s !== correctSpecies)).slice(0,3);
+    const options = shuffle([correctSpecies, ...distractors]);
+    const bracketGenus = genusByShape[shape.key] || shape.label;
+    options.forEach(full => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'species-btn';
+      const ep = speciesPart(full);
+      const display = `(${bracketGenus}) ${ep.charAt(0).toUpperCase() + ep.slice(1)}`;
+      btn.textContent = display;
+      btn.dataset.full = full; // underlying accurate full name
+      btn.dataset.iscorrect = (full === correctSpecies);
+      btn.setAttribute('role','listitem');
+      btn.addEventListener('click', () => handleSpeciesChoice(btn));
+      btn.addEventListener('keydown', e => { if (['Enter',' '].includes(e.key)) { e.preventDefault(); handleSpeciesChoice(btn); }});
+      speciesChoicesEl.appendChild(btn);
+    });
+    speciesChoicesEl.querySelector('.species-btn')?.focus();
+  }
+
+  function handleSpeciesChoice(btn) {
+    if (!inSpeciesChallenge) return;
+    const isCorrect = btn.dataset.iscorrect === 'true';
+    lockSpeciesChoices();
+    if (isCorrect) {
+      const bonus = 150; // fixed bonus for species correct
+      score += bonus;
+      feedbackEl.textContent = `Species match: ${sciCap(btn.dataset.full)} +${bonus}`;
+      examplesCompleted.add(currentShape.key);
+      btn.classList.add('correct');
+    } else {
+      lives--; streak = 0;
+      btn.classList.add('wrong');
+      feedbackEl.textContent = `Incorrect example (${btn.textContent}).`;
+    }
+    // Reveal true full names for all options
+    speciesChoicesEl.querySelectorAll('.species-btn').forEach(b => {
+      b.textContent = sciCap(b.dataset.full);
+      if (b.dataset.iscorrect === 'true') b.classList.add('correct');
+    });
+    updateHUD();
+    inSpeciesChallenge = false;
+    setTimeout(() => {
+      speciesChallenge.hidden = true;
+      if (lives <= 0) { gameOver(); return; }
+      nextShape();
+    }, 900);
+  }
+
+  function lockSpeciesChoices() {
+    speciesChoicesEl.querySelectorAll('.species-btn').forEach(b => b.classList.add('locked'));
+  }
 
 })();
